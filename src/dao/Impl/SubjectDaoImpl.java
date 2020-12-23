@@ -12,6 +12,5 @@ public class SubjectDaoImpl extends AbstractDAOImpl<SubjectModel> implements Sub
 		String sql = "SELECT * FROM monhoc WHERE id_mh = ?";
 		List<SubjectModel> result = query(sql, new SubjectMapper(), id_mh);
 		return result.isEmpty()?null : result.get(0);
-		
 	}
 }

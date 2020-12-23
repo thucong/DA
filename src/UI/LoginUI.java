@@ -69,7 +69,7 @@ public class LoginUI extends UnicastRemoteObject implements Remote {
 		lblNewLabel.setBounds(31, 61, 105, 16);
 		frame.getContentPane().add(lblNewLabel);
 		
-		textField = new JTextField("");
+		textField = new JTextField("102170075");
 		textField.setBounds(148, 58, 183, 22);
 		frame.getContentPane().add(textField);
 		textField.setColumns(10);
@@ -78,7 +78,7 @@ public class LoginUI extends UnicastRemoteObject implements Remote {
 		lblNewLabel_1.setBounds(31, 110, 93, 16);
 		frame.getContentPane().add(lblNewLabel_1);
 		
-		textField_1 = new JTextField("");
+		textField_1 = new JTextField("123456789");
 		textField_1.setBounds(148, 107, 183, 22);
 		frame.getContentPane().add(textField_1);
 		textField_1.setColumns(10);
@@ -116,7 +116,7 @@ public class LoginUI extends UnicastRemoteObject implements Remote {
 					AccountModel account = server.login(username, password);
 					if(account != null) {
 						if(account.getRole().equals("sinhvien")) {
-							new UI_Client("UI Sinh vien");
+							new UI_Client(account.getId());
 						} else if(account.getRole().equals("giangvien")) {
 							new UI_ClientGV("UI Giao vien");
 						}

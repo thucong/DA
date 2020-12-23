@@ -10,5 +10,4 @@ public class UserSubjectDaoImpl extends AbstractDAOImpl<UserSubjectModel> implem
 		//String sql = "SELECT * FROM "
 		return null;
 	}
-
 }
