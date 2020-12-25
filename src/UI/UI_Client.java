@@ -18,18 +18,22 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
 import model.AccountModel;
 import model.PointModel;
 import model.StudentModel;
+import model.SubjectModel;
 import remote.IServer;
 
 public class UI_Client extends JFrame {
 	private static IServer server;
 	private AccountModel account;
 	private StudentModel studentModel;
+	private SubjectModel subject;
 	private List<PointModel> points;
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -126,15 +130,18 @@ public class UI_Client extends JFrame {
 				}
 			}
 		});
-		/*btn1.addActionListener(new ActionListener() {
-			
+		btn1.addActionListener(new ActionListener() {
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				connectSever();
-				Long id_user = account.getId();
-				
-			
-		});*/
+				String subjectName = txt.getText().trim().toLowerCase();
+				points = getPointsList(studentModel.getId_user(), subjectName);
+				model = new DefaultTableModel();
+				configTable();
+				table.setModel(model);
+			}
+		});
 	}
 
 	private void connectSever() {
@@ -177,6 +184,18 @@ public class UI_Client extends JFrame {
 		}
 	}
 
+	private List<PointModel> getPointsList(Long userId, String subjectName) {
+		connectSever();
+		if (server == null)
+			return null;
+		try {
+			return server.getPointsList(userId, subjectName);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 	private StudentModel getStudentInfor(Long userId) {
 		connectSever();
 		if (server == null)
@@ -188,20 +207,20 @@ public class UI_Client extends JFrame {
 			return null;
 		}
 	}
-	/*private List<PointModel> getStudentInfor( String subject){
+
+	private StudentModel getStudentInfor(Long userId, Long subjectId) {
 		connectSever();
 		if (server == null)
 			return null;
 		try {
-			return server.getPointsList(subject);
+			return server.getStudentInfor(userId, subjectId);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 			return null;
 		}
-	}*/
-	
+	}
+
 	public static void main(String[] args) {
 		new UI_Client(1L);
-		
 	}
 }

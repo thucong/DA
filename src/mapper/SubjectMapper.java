@@ -14,12 +14,10 @@ public class SubjectMapper implements RowMapper<SubjectModel>{
 			SubjectModel model = new SubjectModel();
 			model.setId(resultSet.getLong("id_mh"));
 			model.setName(resultSet.getString("TenMH"));
-			
 			return model;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;
 		}
 	}
-	
 }

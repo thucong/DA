@@ -118,7 +118,7 @@ public class LoginUI extends UnicastRemoteObject implements Remote {
 						if(account.getRole().equals("sinhvien")) {
 							new UI_Client(account.getId());
 						} else if(account.getRole().equals("giangvien")) {
-							new UI_ClientGV("UI Giao vien");
+							new UI_ClientGV(account.getId());
 						}
 					}
 				} catch (RemoteException e1) {
