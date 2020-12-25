@@ -125,6 +125,15 @@ public class UI_Client extends JFrame {
 				}
 			}
 		});
+		/*btn1.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				connectSever();
+				Long id_user = account.getId();
+				
+			
+		});*/
 	}
 
 	private void connectSever() {
@@ -176,8 +185,20 @@ public class UI_Client extends JFrame {
 			return null;
 		}
 	}
-
+	/*private List<PointModel> getStudentInfor( String subject){
+		connectSever();
+		if (server == null)
+			return null;
+		try {
+			return server.getPointsList(subject);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}*/
+	
 	public static void main(String[] args) {
 		new UI_Client(1L);
+		
 	}
 }

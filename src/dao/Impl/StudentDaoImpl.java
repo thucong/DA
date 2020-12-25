@@ -15,4 +15,5 @@ public class StudentDaoImpl extends AbstractDAOImpl<StudentModel> implements Stu
 		List<StudentModel> result = query(sql, new StudentMapper(), id_user);
 		return result.isEmpty()?null : result.get(0);
 	}
+	
 }

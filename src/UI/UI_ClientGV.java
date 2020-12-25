@@ -19,11 +19,14 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
+import model.SubjectModel;
+
 public class UI_ClientGV extends JFrame implements ActionListener, ItemListener {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
     private JLabel lbTitle, lbSearch, lbSubject, lbResult;
     private JComboBox<String> cbx;
+    private SubjectModel subjectModel;
     private String[] items = {"Công nghệ web", "Java"};
     private JTextField txt;
     private JButton btn1, btn2, btnDetail;
