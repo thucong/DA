@@ -43,7 +43,9 @@ public class UI_Client extends JFrame {
 
 	public UI_Client(Long id) {
 		studentModel = getStudentInfor(id);
-		setTitle("Xin chào " + studentModel.getHoten());
+		if (studentModel != null) {
+			setTitle("Xin chào " + studentModel.getHoten());
+		}
 		points = getPointsList(id);
 		GUI();
 		setBounds(300, 100, 600, 450);
@@ -96,7 +98,6 @@ public class UI_Client extends JFrame {
 				return types[columnIndex];
 			}
 		};
-		
 
 		table = new JTable();
 		table.setModel(model);
@@ -140,10 +141,12 @@ public class UI_Client extends JFrame {
 
 	private void configTable() {
 		model.setColumnIdentifiers(columnNames);
-		for (PointModel p : points) {
-			p.setAveragePoint();
-			model.addRow(new Object[] { p.getSubjectName(), p.getHomeworkPoint(),
-					p.getMidTermPoint(), p.getEndTermPoint(), p.getAveragePoint() });
+		if (points != null) {
+			for (PointModel p : points) {
+				p.setAveragePoint();
+				model.addRow(new Object[] { p.getSubjectName(), p.getHomeworkPoint(), p.getMidTermPoint(),
+						p.getEndTermPoint(), p.getAveragePoint() });
+			}
 		}
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		table.getColumnModel().getColumn(0).setPreferredWidth(220);
