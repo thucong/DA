@@ -14,7 +14,7 @@ public class TeacherDaoImpl extends AbstractDAOImpl<TeacherModel> implements Tea
 	public TeacherModel teacher(Long id_user) {
 		String sql = "SELECT * FROM giangvien WHERE id_user = ?";
 		List<TeacherModel> result = query(sql, new TeacherMapper(), id_user);
-		return result.isEmpty()?null : result.get(0);
+		return result.isEmpty() ? null : result.get(0);
 	}
-	
+
 }
