@@ -10,21 +10,26 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
-import model.PointModel;
 import model.StudentInforModel;
 import model.StudentModel;
 import model.SubjectModel;
@@ -37,24 +42,30 @@ public class UI_ClientGV extends JFrame implements ActionListener, ItemListener 
 	private JLabel lbTitle, lbSearch, lbSubject, lbResult;
 	private JComboBox<String> cbx;
 	private SubjectModel subjectModel;
-	private String[] items = { "Công nghệ web", "Java" };
+	private StudentModel studentModel;
+//	private List<PointModel> points;
+	private String[] items;
 	private JTextField txt;
-	private JButton btn1, btn2, btnDetail;
+	private JButton btn1, btn2, btn3, btn4, btnDetail;
 	private JTable table;
 	private DefaultTableModel model;
 	private JScrollPane scroll;
-	private String[] columnNames = { "STT", "Họ Tên", "Ngày sinh", "Lớp", "Môn học", "Điểm BT", "Điểm GK", "Điểm CK",
-			"Điểm TB", "Chức năng" };
+	private String[] columnNames = { "MSSV", "Họ Tên", "Ngày sinh", "Lớp", "Môn học", "Điểm BT", "Điểm GK", "Điểm CK",
+			"Điểm TB"};
 	private IServer server;
 	private TeacherModel teacherModel;
 	private List<StudentInforModel> studentInfors;
-
+	private long id;
+	private List<SubjectModel> subjects;
+	
 	public UI_ClientGV(Long id) {
+		this.id = id;
 		teacherModel = getTeacher(id);
 		if (teacherModel != null) {
 			setTitle("Xin chào giáo viên " + teacherModel.getHoten());
 		}
 		studentInfors = getStudentInforsList(id);
+		subjects = getSubjectsList(id);
 		GUI();
 		setBounds(300, 100, 800, 450);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -74,13 +85,13 @@ public class UI_ClientGV extends JFrame implements ActionListener, ItemListener 
 		lbTitle.setForeground(Color.RED);
 		contentPane.add(lbTitle);
 
-		lbSubject = new JLabel("Môn học:");
-		lbSubject.setBounds(5, 57, 94, 14);
-		contentPane.add(lbSubject);
-
-		cbx = new JComboBox<>(items);
-		cbx.setBounds(100, 57, 89, 20);
-		contentPane.add(cbx);
+		/*
+		 * lbSubject = new JLabel("Môn học:"); lbSubject.setBounds(5, 57, 94, 14);
+		 * contentPane.add(lbSubject);
+		 * 
+		 * cbx = new JComboBox<>(items); cbx.setBounds(100, 57, 89, 20);
+		 * contentPane.add(cbx);
+		 */
 
 		lbSearch = new JLabel("Nhập nội dung:");
 		lbSearch.setBounds(5, 94, 83, 14);
@@ -98,6 +109,14 @@ public class UI_ClientGV extends JFrame implements ActionListener, ItemListener 
 		btn2 = new JButton("Reset");
 		btn2.setBounds(484, 88, 89, 23);
 		contentPane.add(btn2);
+		
+		btn3 = new JButton("Xóa");
+		btn3.setBounds(590, 88, 89, 23);
+		contentPane.add(btn3);
+		
+		btn4 = new JButton("Cập nhật");
+		btn4.setBounds(690, 88, 89, 23);
+		contentPane.add(btn4);
 
 		model = new DefaultTableModel() {
 			@Override
@@ -122,23 +141,72 @@ public class UI_ClientGV extends JFrame implements ActionListener, ItemListener 
 		btn1.addActionListener(this);
 		btn2.addActionListener(this);
 
-		cbx.addItemListener(this);
+//		cbx.addItemListener(this);
 
-		btnDetail = new JButton("Xem chi tiết");
-		btnDetail.setBounds(464, 331, 109, 23);
-		contentPane.add(btnDetail);
+		// btnDetail = new JButton("Xem chi tiết");
+		// btnDetail.setBounds(464, 331, 109, 23);
+		// contentPane.add(btnDetail);
+		btn1.addActionListener(new ActionListener() {
 
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				connectSever();
+				String searchData = txt.getText().trim().toLowerCase();
+				studentInfors = getStudentInforsList(id, searchData);
+				model = new DefaultTableModel();
+				configTable();
+				table.setModel(model);
+			}
+		});
+
+		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+
+			@Override
+			public void valueChanged(ListSelectionEvent arg0) {
+//				System.out.println(table.getValueAt(table.getSelectedRow(), 0).toString());
+			}
+		});
+		
+		btn3.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if(table.getSelectedRows().length == 0) {
+					JOptionPane.showMessageDialog(null, "Bạn chưa chọn hàng nào!");
+				} else {
+					int input = JOptionPane.showConfirmDialog(null, "Bạn chắc chắn muốn xóa hàng vừa chọn?");
+					if(input == 0) {
+
+						System.out.println(input);
+						for(int i : table.getSelectedRows()) {
+							delete(i);
+						}
+						model = new DefaultTableModel();
+						String searchData = txt.getText();
+						studentInfors = getStudentInforsList(id, searchData);
+						configTable();
+						table.setModel(model);
+					}
+				}
+			}
+		});
+		table.getModel().addTableModelListener(new TableModelListener() {
+			
+			@Override
+			public void tableChanged(TableModelEvent e) {
+				System.out.println("Column: " + e.getColumn() + " Row: " + e.getFirstRow());
+			}
+		});
 	}
 
 	private void configTable() {
 		model.setColumnIdentifiers(columnNames);
 
 		if (studentInfors != null) {
-			int i = 1;
 			for (StudentInforModel s : studentInfors) {
-				model.addRow(new Object[] { i++, s.getStudentName(), s.getBirthday(), s.getClassName(),
+				model.addRow(new Object[] { s.getUsername(), s.getStudentName(), s.getBirthday(), s.getClassName(),
 						s.getSubjectName(), s.getHomeworkPoint(), s.getMidTermPoint(), s.getEndTermPoint(),
-						s.getAveragePoint()});
+						s.getAveragePoint() });
 			}
 		}
 
@@ -198,6 +266,30 @@ public class UI_ClientGV extends JFrame implements ActionListener, ItemListener 
 		}
 	}
 
+	private List<SubjectModel> getSubjectsList(Long gvID) {
+		connectSever();
+		if (server == null)
+			return null;
+		try {
+			return server.findAllByGVID(gvID);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	private List<StudentInforModel> getStudentInforsList(Long gvID, String searchData) {
+		connectSever();
+		if (server == null)
+			return null;
+		try {
+			return server.getStudentInforsListBysearchData(gvID, searchData);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 	private TeacherModel getTeacher(Long gvId) { // lỗi
 		connectSever();
 		if (server == null)
@@ -209,4 +301,37 @@ public class UI_ClientGV extends JFrame implements ActionListener, ItemListener 
 			return null;
 		}
 	}
+	
+	private void delete(int i) {
+		try {
+			if(server == null) {
+				
+			} else {
+				server.deletePoint(studentInfors.get(i).getId());
+			}
+		} catch (RemoteException e) {
+			// TODO: handle exception
+		}
+	}
+	
+	public static <T> ArrayList<T> removeDuplicates(ArrayList<T> list) 
+    { 
+  
+        // Create a new ArrayList 
+        ArrayList<T> newList = new ArrayList<T>(); 
+  
+        // Traverse through the first list 
+        for (T element : list) { 
+  
+            // If this element is not present in newList 
+            // then add it 
+            if (!newList.contains(element)) { 
+  
+                newList.add(element); 
+            } 
+        } 
+  
+        // return the new list 
+        return newList; 
+    } 
 }

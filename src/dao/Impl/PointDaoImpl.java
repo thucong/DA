@@ -24,5 +24,18 @@ public class PointDaoImpl extends AbstractDAOImpl<PointModel> implements PointDa
 		sql.append("FROM diem INNER JOIN monhoc ON diem.id_monhoc = monhoc.id_monhoc INNER JOIN sinhvien ON diem.id_user = sinhvien.id_user WHERE id_monhoc = ?");
 		return query(sql.toString(), new PointMapper(),id_monhoc);
 	}
+	public List<PointModel> findStudent(Long userId, String studentName){
+		StringBuilder sql = new StringBuilder("SELECT sinhvien.*, diem.*, monhoc.*, lop.* FROM sinhvien ");
+		sql.append("JOIN diem ON sinhvien.id_user = diem.id_user ");
+		sql.append("JOIN lop ON sinhvien.id_lop = lop.id_lop ");
+		sql.append("JOIN monhoc ON diem.id_monhoc = monhoc.id_mh ");
+		sql.append("WHERE sinhvien.hoten like '%"+studentName+"%'");
+		return query(sql.toString(), new PointMapper(), userId, studentName);
+	}
+	
+	public void delete(int id) {
+		String sql = "DELETE FROM diem WHERE id = ?";
+		update(sql, id);
+	}
 	
 }

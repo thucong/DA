@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 public class StudentInforModel implements Serializable {
 
+	private int id;
+	private String username;
 	private String studentName;
 	private String birthday;
 	private String gender;
@@ -13,6 +15,8 @@ public class StudentInforModel implements Serializable {
 	private double midTermPoint;
 	private double endTermPoint;
 	private double averagePoint;
+	private Long svId;
+	private Long mhId;
 
 	public double getAveragePoint() {
 		return averagePoint;
@@ -84,5 +88,37 @@ public class StudentInforModel implements Serializable {
 
 	public void setGender(String gender) {
 		this.gender = gender;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public Long getSvId() {
+		return svId;
+	}
+
+	public void setSvId(Long svId) {
+		this.svId = svId;
+	}
+
+	public Long getMhId() {
+		return mhId;
+	}
+
+	public void setMhId(Long mhId) {
+		this.mhId = mhId;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 }

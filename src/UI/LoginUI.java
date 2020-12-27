@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import model.AccountModel;
@@ -34,7 +35,7 @@ public class LoginUI extends UnicastRemoteObject implements Remote {
 	private JTextField textField_1;
 	private JLabel lblNewLabel_2;
 	private static IServer server;
-
+	private JPasswordField jPasswordField;
 	/**
 	 * Launch the application.
 	 */
@@ -62,14 +63,14 @@ public class LoginUI extends UnicastRemoteObject implements Remote {
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 399, 268);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("Tên đăng nhập:");
 		lblNewLabel.setBounds(31, 61, 105, 16);
 		frame.getContentPane().add(lblNewLabel);
 		
-		textField = new JTextField("102170075");
+		textField = new JTextField("");
 		textField.setBounds(148, 58, 183, 22);
 		frame.getContentPane().add(textField);
 		textField.setColumns(10);
@@ -78,10 +79,10 @@ public class LoginUI extends UnicastRemoteObject implements Remote {
 		lblNewLabel_1.setBounds(31, 110, 93, 16);
 		frame.getContentPane().add(lblNewLabel_1);
 		
-		textField_1 = new JTextField("123456789");
-		textField_1.setBounds(148, 107, 183, 22);
-		frame.getContentPane().add(textField_1);
-		textField_1.setColumns(10);
+		jPasswordField = new JPasswordField("");
+		jPasswordField.setBounds(148, 107, 183, 22);
+		frame.getContentPane().add(jPasswordField);
+		jPasswordField.setColumns(10);
 		
 		lblNewLabel_2 = new JLabel("Đăng nhập",JLabel.CENTER);
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.BOLD, 18));
@@ -112,7 +113,7 @@ public class LoginUI extends UnicastRemoteObject implements Remote {
 				connectSever();
 				try {
 					String username = textField.getText();
-					String password = textField_1.getText();
+					String password = jPasswordField.getText();
 					AccountModel account = server.login(username, password);
 					if(account != null) {
 						if(account.getRole().equals("sinhvien")) {
@@ -121,6 +122,7 @@ public class LoginUI extends UnicastRemoteObject implements Remote {
 							new UI_ClientGV(account.getId());
 						}
 					}
+					
 				} catch (RemoteException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

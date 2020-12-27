@@ -9,16 +9,19 @@ import dao.AccountDao;
 import dao.PointDao;
 import dao.StudentDao;
 import dao.StudentInforDao;
+import dao.SubjectDao;
 import dao.TeacherDao;
 import dao.Impl.AccountDaoImpl;
 import dao.Impl.PointDaoImpl;
 import dao.Impl.StudentDaoImpl;
 import dao.Impl.StudentInforDaoImpl;
+import dao.Impl.SubjectDaoImpl;
 import dao.Impl.TeacherDaoImpl;
 import model.AccountModel;
 import model.PointModel;
 import model.StudentInforModel;
 import model.StudentModel;
+import model.SubjectModel;
 import model.TeacherModel;
 import remote.IServer;
 
@@ -30,6 +33,7 @@ public class ServerImpl extends UnicastRemoteObject implements IServer, Remote {
 	private PointDao pointDao;
 	private TeacherDao teacherDao;
 	private StudentInforDao studentInforDao;
+	private SubjectDao subjectDao;
 
 	public ServerImpl() throws RemoteException {
 		super();
@@ -38,6 +42,7 @@ public class ServerImpl extends UnicastRemoteObject implements IServer, Remote {
 		pointDao = new PointDaoImpl();
 		teacherDao = new TeacherDaoImpl();
 		studentInforDao = new StudentInforDaoImpl();
+		subjectDao = new SubjectDaoImpl();
 	}
 
 	@Override
@@ -62,7 +67,9 @@ public class ServerImpl extends UnicastRemoteObject implements IServer, Remote {
 	public List<PointModel> getPointsList(Long userId,String subject) throws RemoteException {
 		return pointDao.findSubject(userId,subject);
 	}
-
+	public List<PointModel> getPointsListSt(Long userId, String studentName) throws RemoteException{
+		return pointDao.findStudent(userId,studentName);
+	}
 	@Override
 	public List<StudentInforModel> getStudentInforsList(Long gvID) throws RemoteException {
 		return studentInforDao.findAllByGVID(gvID);
@@ -71,5 +78,20 @@ public class ServerImpl extends UnicastRemoteObject implements IServer, Remote {
 	@Override
 	public TeacherModel getTeacher(Long gvId) throws RemoteException {
 		return teacherDao.teacher(gvId);
+	}
+
+	@Override
+	public List<StudentInforModel> getStudentInforsListBysearchData(Long gvID, String searchData) throws RemoteException {
+		return studentInforDao.findAllByGVIDAndsearchData(gvID, searchData);
+	}
+
+	@Override
+	public void deletePoint(int id) throws RemoteException {
+		pointDao.delete(id);
+	}
+
+	@Override
+	public List<SubjectModel> findAllByGVID(Long gvId) throws RemoteException {
+		return subjectDao.findAllByGVID(gvId);
 	}
 }

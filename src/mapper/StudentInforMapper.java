@@ -11,6 +11,7 @@ public class StudentInforMapper implements RowMapper<StudentInforModel> {
 	public StudentInforModel mapRow(ResultSet resultSet) {
 		StudentInforModel model = new StudentInforModel();
 		try {
+			model.setId(resultSet.getInt("id"));
 			model.setStudentName(resultSet.getString("hoten"));
 			model.setBirthday(resultSet.getString("ngaysinh"));
 			model.setGender(resultSet.getString("gioitinh"));
@@ -20,6 +21,9 @@ public class StudentInforMapper implements RowMapper<StudentInforModel> {
 			model.setMidTermPoint(resultSet.getDouble("diemgk"));
 			model.setEndTermPoint(resultSet.getDouble("diemck"));
 			model.setAveragePoint(resultSet.getDouble("diemtb"));
+			model.setUsername(resultSet.getString("username"));
+			model.setSvId(resultSet.getLong("diem.id_user"));
+			model.setMhId(resultSet.getLong("diem.id_gv"));
 			return model;
 		} catch (SQLException e) {
 			e.printStackTrace();

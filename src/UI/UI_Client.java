@@ -53,7 +53,7 @@ public class UI_Client extends JFrame {
 		points = getPointsList(id);
 		GUI();
 		setBounds(300, 100, 600, 450);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setVisible(true);
 		setResizable(false);
 	}
@@ -87,9 +87,9 @@ public class UI_Client extends JFrame {
 		btn2.setBounds(484, 88, 89, 23);
 		contentPane.add(btn2);
 
-		btnDetail = new JButton("Xem chi tiết");
-		btnDetail.setBounds(464, 331, 109, 23);
-		contentPane.add(btnDetail);
+		//btnDetail = new JButton("Xem chi tiết");
+		//btnDetail.setBounds(464, 331, 109, 23);
+		//contentPane.add(btnDetail);
 
 		model = new DefaultTableModel() {
 			Class[] types = new Class[] {
@@ -117,19 +117,7 @@ public class UI_Client extends JFrame {
 		lbResult.setBounds(10, 335, 400, 14);
 		contentPane.add(lbResult);
 
-		btnDetail.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				connectSever();
-				Long id_user = account.getId();
-				try {
-					StudentModel student = server.getStudentInfor(id_user);
-				} catch (RemoteException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-		});
+		
 		btn1.addActionListener(new ActionListener() {
 
 			@Override

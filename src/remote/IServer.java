@@ -8,6 +8,7 @@ import model.AccountModel;
 import model.PointModel;
 import model.StudentInforModel;
 import model.StudentModel;
+import model.SubjectModel;
 import model.TeacherModel;
 
 public interface IServer extends Remote {
@@ -18,5 +19,10 @@ public interface IServer extends Remote {
 	public List<PointModel> getPointsList(Long userId) throws RemoteException;
 	public List<PointModel> getPointsList(Long userId, String subject) throws RemoteException;
 	public List<StudentInforModel> getStudentInforsList(Long gvID) throws RemoteException;
+	public List<StudentInforModel> getStudentInforsListBysearchData(Long gvID, String searchData) throws RemoteException;
 	public TeacherModel getTeacher(Long gvId) throws RemoteException; 
+	public List<PointModel> getPointsListSt(Long userId, String studentName) throws RemoteException;
+	
+	void deletePoint(int id) throws RemoteException;
+	List<SubjectModel> findAllByGVID(Long gvId) throws RemoteException;
 }
