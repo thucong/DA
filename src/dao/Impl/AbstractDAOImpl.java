@@ -21,7 +21,7 @@ public class AbstractDAOImpl<T> implements GenericDao<T> {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			String url = "jdbc:mysql://localhost:3306/dacsmn"; 
 			String user = "root";
-			String password = "851644";
+			String password = "";
 			return DriverManager.getConnection(url, user, password);
 		} catch (ClassNotFoundException e) {
 			return null;
